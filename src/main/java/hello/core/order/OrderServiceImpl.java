@@ -8,19 +8,27 @@ import hello.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+//    private final MemberRepository memberRepository = new MemoryMemberRepository();
+//    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+
+    /*final 선언인 경우 기본으로 무조건  할당하든 아래처럼 생성자를 통해 할당하든 되어야함.*/
+    /*인터페이스만 참조하고 있음. DIP 준수 중*/
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    /*AppConfig에서 받은것을 final 변수에 할당*/
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+
+        /*FixDiscount인지, RateDiscount인지는 모름!!!*/
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId);
 
-        int discountPrice = discountPolicy.discount(member,itemPrice);  /*member 통으로 넘겨서 추후 확장성 체크*/
-        /*설계가 매우 잘된 형태*/
-        /*오더 서비스 입장에서는 할인 에 대한 것은 discountPolicy가 알아서 처리- 단일체계*/
-        /*할인 문제는 할인쪽에서만 수정을 해서 유지보수 용이하게 수정을 하면 됨*/
-        /*이게 구분이 안되어 있으면 오더서비스도 수정해야 됐을 것*/
-
+        int discountPrice = discountPolicy.discount(member,itemPrice);
         return new Order(memberId, itemName,itemPrice, discountPrice);
 
     }
