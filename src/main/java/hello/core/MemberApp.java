@@ -4,13 +4,23 @@ import hello.core.member.Grade;
 import hello.core.member.Member;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MemberApp {
     public static void main(String[] args) {
-//        MemberService memberService = new MemberServiceImpl();    /*appConfig를 사용해서 리팩토링*/
+//        MemberService memberService = new MemberServiceImpl();
 
-        AppConfig appConfig = new AppConfig();
-        MemberService memberService = appConfig.memberService();    /*여기 안에는 impl을 만들고, 이 impl은 memoryMemberRepository를 사용한다고 명시되어있음(param)*/
+//        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = appConfig.memberService();
+
+        /*스프링 컨에티너 생성*/
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        /*AppConfig의 환경정보를 가지고 생성-bean을 스프링 컨테이너에 넣어서 관리*/
+
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);/*기본적으로 메서드 이름으로 등록됨, 두번째는 반황 타입*/
+
+
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
 

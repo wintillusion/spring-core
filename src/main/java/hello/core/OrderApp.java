@@ -5,6 +5,8 @@ import hello.core.member.Member;
 import hello.core.member.MemberService;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class OrderApp {
 
@@ -12,13 +14,13 @@ public class OrderApp {
 //        MemberService memberService = new MemberServiceImpl();
 //        OrderService orderService = new OrderServiceImpl();
 
-        AppConfig appConfig = new AppConfig();
-        MemberService memberService = appConfig.memberService();
-        OrderService orderService = appConfig.orderService();
+//        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = appConfig.memberService();
+//        OrderService orderService = appConfig.orderService();
 
-        /*orderService를 impl을 반환하는데 생성자로 memoryMemberRepository와 fixDiscountPolicy를 넘겨줌.*/
-        /*orderServiceImpl이 생성된 두 객체를 참조하도록 세팅*/
-        /*그렇게 해서 완성된 OrderServiceImpl 객체를 돌려주고 있는 것*/
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = context.getBean(MemberService.class);
+        OrderService orderService = context.getBean(OrderService.class);
 
         Long memberId = 1L;
         Member member = new Member(memberId, "MemberA", Grade.VIP);
