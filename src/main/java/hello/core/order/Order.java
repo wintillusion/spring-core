@@ -16,7 +16,7 @@ public class Order {
     }
 
     /*최종 계산된 금액*/
-    public int calculatePrice(){
+    public int calculatePrice() {
         return itemPrice - discountPrice;
     }
 
