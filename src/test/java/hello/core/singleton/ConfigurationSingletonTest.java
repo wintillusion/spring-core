@@ -38,4 +38,14 @@ public class ConfigurationSingletonTest {
 
 
     }
+
+    @Test
+    @DisplayName("Configuration 자체를 뜯어서 확인-singleton")
+    void configrationDeop(){
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        AppConfig bean = ac.getBean(AppConfig.class);
+        System.out.println(bean);
+
+    }
+
 }

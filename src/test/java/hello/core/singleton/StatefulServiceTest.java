@@ -26,7 +26,7 @@ class StatefulServiceTest {
         System.out.println("price = " + price);
 
         /*b가 중간에 20000이라고 했을 때 a 의 주문 금액도 20000원으로 처리되는 문제 발생*/
-        Assertions.assertThat(price1).isEqualTo(20000);
+        Assertions.assertThat(price1).isEqualTo(10000);
 
     }
 
